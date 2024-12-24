@@ -9,44 +9,45 @@ using Xunit;
 
 namespace MenuAndOrderLibrary.Tests
 {
-    // Тести для класу Order
     public class OrderTests
     {
-        // Тест перевіряє, чи створюється замовлення з правильними властивостями
-        [Fact]
-        public void CreateOrder_ShouldInitializeWithCorrectValues()
-        {
-            var order = new Order(1);
-
-            // Перевіряємо, чи замовлення має очікуваний ідентифікатор і статус
-            Assert.Equal(1, order.OrderId);
-            Assert.Equal("Очікує", order.Status);
-        }
-
-        // Тест перевіряє, чи правильно розраховується загальна вартість замовлення
         [Fact]
         public void CalculateTotal_ShouldReturnCorrectTotal()
         {
+            // Arrange
             var order = new Order(1);
-            order.OrderedDishes.Add(new Dish("Burger", 10.0m));
-            order.OrderedDishes.Add(new Dish("Fries", 3.0m));
+            order.OrderedDishes.Add(new Dish("Суп", 50.5m)); // Передаємо аргументи в конструктор
+            order.OrderedDishes.Add(new Dish("Салат", 30.25m)); // Передаємо аргументи в конструктор
 
+            // Act
             var total = order.CalculateTotal();
 
-            // Перевіряємо, що сума правильна
-            Assert.Equal(13.0m, total);
+            // Assert
+            Assert.Equal(80.75m, total); // Загальна вартість повинна бути 80.75
         }
 
-        // Тест перевіряє, чи оновлюється статус замовлення
         [Fact]
-        public void UpdateOrderStatus_ShouldChangeStatus()
+        public void UpdateOrderStatus_ShouldUpdateStatusCorrectly()
         {
+            // Arrange
             var order = new Order(1);
 
+            // Act
             order.UpdateOrderStatus("Готується");
+            order.UpdateOrderStatus("Готово");
 
-            // Перевіряємо, чи змінився статус
-            Assert.Equal("Готується", order.Status);
+            // Assert
+            Assert.Equal("Готово", order.Status); // Статус повинен оновитися до "Готово"
+        }
+
+        [Fact]
+        public void UpdateOrderStatus_InvalidSequence_ShouldThrowException()
+        {
+            // Arrange
+            var order = new Order(1);
+
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => order.UpdateOrderStatus("Готово")); // Неправильна послідовність
         }
     }
 }

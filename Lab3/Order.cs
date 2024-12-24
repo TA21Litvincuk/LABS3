@@ -24,7 +24,16 @@ namespace Lab3
         // Оновлює статус замовлення
         public void UpdateOrderStatus(string newStatus)
         {
-            Status = newStatus;
+            // Перевірка дозволеної послідовності статусів
+            if ((Status == "Очікує" && newStatus == "Готується") ||
+                (Status == "Готується" && newStatus == "Готово"))
+            {
+                Status = newStatus;
+            }
+            else
+            {
+                throw new InvalidOperationException("Неправильна послідовність оновлення статусу.");
+            }
         }
 
         // Обчислює загальну вартість замовлення
