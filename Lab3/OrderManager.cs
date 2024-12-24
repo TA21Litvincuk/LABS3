@@ -5,53 +5,46 @@ using System.Linq;
 
 namespace Lab3
 {
-    // Клас для управління замовленнями
     public class OrderManager
     {
-        // Приватний список усіх замовлень
-        private List<Order> orders = new();
+        private List<Order> orders; // Список усіх замовлень
 
-        // Метод для створення нового замовлення
+        public OrderManager()
+        {
+            orders = new List<Order>(); // Ініціалізуємо список замовлень
+        }
+
+        // Створює нове замовлення з унікальним ідентифікатором
         public void CreateOrder(int orderId)
         {
-            // Створюємо замовлення і додаємо його до списку
-            var order = new Order(orderId);
-            orders.Add(order);
+            orders.Add(new Order(orderId)); // Додаємо нове замовлення до списку
         }
 
-        // Метод для додавання страви до замовлення
+        // Додає страву до конкретного замовлення
         public void AddDishToOrder(int orderId, Dish dish)
         {
-            // Знаходимо замовлення за ідентифікатором
-            var order = orders.FirstOrDefault(o => o.OrderId == orderId);
+            var order = orders.Find(o => o.OrderId == orderId); // Знаходимо замовлення за ID
             if (order != null)
             {
-                order.OrderedDishes.Add(dish); // Додаємо страву до замовлення
+                order.OrderedDishes.Add(dish); // Додаємо страву до списку страв замовлення
             }
         }
 
-        // Метод для видалення страви з замовлення
+        // Видаляє страву з конкретного замовлення за назвою
         public void RemoveDishFromOrder(int orderId, string dishName)
         {
-            // Знаходимо замовлення за ідентифікатором
-            var order = orders.FirstOrDefault(o => o.OrderId == orderId);
+            var order = orders.Find(o => o.OrderId == orderId); // Знаходимо замовлення за ID
             if (order != null)
             {
-                // Знаходимо страву в списку замовлення
-                var dish = order.OrderedDishes.FirstOrDefault(d => d.Name == dishName);
-                if (dish != null)
-                {
-                    order.OrderedDishes.Remove(dish); // Видаляємо страву
-                }
+                order.OrderedDishes.RemoveAll(d => d.Name == dishName); // Видаляємо страву зі списку
             }
         }
 
-        // Метод для отримання статусу замовлення
+        // Отримує статус конкретного замовлення
         public string GetOrderStatus(int orderId)
         {
-            // Знаходимо замовлення за ідентифікатором і повертаємо його статус
-            var order = orders.FirstOrDefault(o => o.OrderId == orderId);
-            return order?.Status ?? "Замовлення не знайдено";
+            var order = orders.Find(o => o.OrderId == orderId); // Знаходимо замовлення за ID
+            return order != null ? order.Status : null; // Повертаємо статус замовлення або null
         }
     }
 }

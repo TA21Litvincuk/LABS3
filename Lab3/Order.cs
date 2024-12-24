@@ -9,42 +9,33 @@ namespace Lab3
     // Клас, що представляє замовлення
     public class Order
     {
-        // Ідентифікатор замовлення
-        public int OrderId { get; set; }
+        public int OrderId { get; } // Унікальний ідентифікатор замовлення
+        public List<Dish> OrderedDishes { get; } // Список страв у замовленні
+        public string Status { get; private set; } // Поточний статус замовлення
 
-        // Список замовлених страв
-        public List<Dish> OrderedDishes { get; set; } = new();
-
-        // Поточний статус замовлення
-        public string Status { get; set; } = "Очікує";
-
-        // Конструктор для створення замовлення за його ідентифікатором
+        // Конструктор для створення замовлення
         public Order(int orderId)
         {
-            OrderId = orderId;
+            OrderId = orderId; // Присвоюємо унікальний ідентифікатор
+            OrderedDishes = new List<Dish>(); // Ініціалізуємо список страв
+            Status = "Очікує"; // Початковий статус замовлення
         }
 
-        // Метод для розрахунку загальної вартості замовлення
-        public decimal CalculateTotal()
-        {
-            return OrderedDishes.Sum(d => d.Price); // Підсумовуємо ціни всіх страв
-        }
-
-        // Метод для оновлення статусу замовлення
+        // Оновлює статус замовлення
         public void UpdateOrderStatus(string newStatus)
         {
-            // Дозволені переходи між статусами
-            var allowedTransitions = new Dictionary<string, string[]>
-            {
-                { "Очікує", new[] { "Готується" } },
-                { "Готується", new[] { "Готово" } }
-            };
+            Status = newStatus;
+        }
 
-            // Перевіряємо, чи можливий перехід у новий статус
-            if (allowedTransitions.ContainsKey(Status) && allowedTransitions[Status].Contains(newStatus))
+        // Обчислює загальну вартість замовлення
+        public decimal CalculateTotal()
+        {
+            decimal total = 0;
+            foreach (var dish in OrderedDishes)
             {
-                Status = newStatus; // Оновлюємо статус
+                total += dish.Price; // Додаємо ціну кожної страви до загальної суми
             }
+            return total; // Повертаємо загальну вартість
         }
     }
 }

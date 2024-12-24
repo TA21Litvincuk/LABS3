@@ -1,78 +1,51 @@
 using Lab3;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 using Xunit;
 
 namespace MenuAndOrderLibrary.Tests
 {
+    // Тести для класу Order
     public class OrderTests
     {
+        // Тест перевіряє, чи створюється замовлення з правильними властивостями
         [Fact]
-        public void Order_CanBeCreated_WithValidProperties()
+        public void CreateOrder_ShouldInitializeWithCorrectValues()
         {
-            // Arrange
-            int orderId = 1;
+            var order = new Order(1);
 
-            // Act
-            var order = new Order(orderId);
-
-            // Assert
+            // Перевіряємо, чи замовлення має очікуваний ідентифікатор і статус
             Assert.Equal(1, order.OrderId);
-            Assert.Empty(order.OrderedDishes);
             Assert.Equal("Очікує", order.Status);
         }
 
+        // Тест перевіряє, чи правильно розраховується загальна вартість замовлення
         [Fact]
-        public void CanAddDishToOrder()
+        public void CalculateTotal_ShouldReturnCorrectTotal()
         {
-            // Arrange
             var order = new Order(1);
-            var dish = new Dish("Pizza", 12.99m);
+            order.OrderedDishes.Add(new Dish("Burger", 10.0m));
+            order.OrderedDishes.Add(new Dish("Fries", 3.0m));
 
-            // Act
-            order.AddDish(dish);
+            var total = order.CalculateTotal();
 
-            // Assert
-            Assert.Single(order.OrderedDishes);
-            Assert.Equal("Pizza", order.OrderedDishes[0].Name);
+            // Перевіряємо, що сума правильна
+            Assert.Equal(13.0m, total);
         }
 
+        // Тест перевіряє, чи оновлюється статус замовлення
         [Fact]
-        public void CanRemoveDishFromOrder()
+        public void UpdateOrderStatus_ShouldChangeStatus()
         {
-            // Arrange
-            var order = new Order(1);
-            var dish = new Dish("Pizza", 12.99m);
-            order.AddDish(dish);
-
-            // Act
-            order.RemoveDish("Pizza");
-
-            // Assert
-            Assert.Empty(order.OrderedDishes);
-        }
-
-        [Fact]
-        public void CanGetOrderStatus()
-        {
-            // Arrange
             var order = new Order(1);
 
-            // Act
-            var status = order.GetStatus();
+            order.UpdateOrderStatus("Готується");
 
-            // Assert
-            Assert.Equal("Очікує", status);
-        }
-
-        [Fact]
-        public void CanUpdateOrderStatus()
-        {
-            // Arrange
-            var order = new Order(1);
-
-            // Act
-            order.UpdateStatus("Готується");
-
-            // Assert
+            // Перевіряємо, чи змінився статус
             Assert.Equal("Готується", order.Status);
         }
     }

@@ -9,34 +9,30 @@ namespace Lab3
     // Клас для управління меню ресторану
     public class Menu
     {
-        // Приватний список усіх страв у меню
-        private List<Dish> dishes = new();
+        private List<Dish> dishes; // Список для зберігання всіх страв у меню
 
-        // Метод для додавання страви в меню
+        public Menu()
+        {
+            dishes = new List<Dish>(); // Ініціалізуємо список
+        }
+
+        // Додає страву до меню
         public void AddDish(Dish dish)
         {
-            // Перевіряємо, чи страва з такою назвою вже є в меню
-            if (!dishes.Any(d => d.Name == dish.Name))
-            {
-                dishes.Add(dish); // Додаємо страву, якщо її немає
-            }
+            dishes.Add(dish);
         }
 
-        // Метод для видалення страви з меню за назвою
-        public void RemoveDish(string dishName)
+        // Видаляє страву з меню за назвою
+        public void RemoveDish(string name)
         {
-            // Знаходимо страву за назвою
-            var dish = dishes.FirstOrDefault(d => d.Name == dishName);
-            if (dish != null)
-            {
-                dishes.Remove(dish); // Видаляємо страву, якщо вона знайдена
-            }
+            dishes.RemoveAll(d => d.Name == name);
         }
 
-        // Метод для отримання списку всіх страв у меню
+        // Повертає список усіх страв у меню
         public List<Dish> GetDishes()
         {
             return dishes;
         }
     }
 }
+    
