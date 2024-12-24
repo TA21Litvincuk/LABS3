@@ -14,40 +14,31 @@ namespace MenuAndOrderLibrary.Tests
         [Fact]
         public void CalculateTotal_ShouldReturnCorrectTotal()
         {
-            // Arrange
             var order = new Order(1);
-            order.OrderedDishes.Add(new Dish("Суп", 50.5m)); // Передаємо аргументи в конструктор
-            order.OrderedDishes.Add(new Dish("Салат", 30.25m)); // Передаємо аргументи в конструктор
+            order.OrderedDishes.Add(new Dish("Суп", 50.5m));
+            order.OrderedDishes.Add(new Dish("Салат", 30.25m));
 
-            // Act
             var total = order.CalculateTotal();
 
-            // Assert
-            Assert.Equal(80.75m, total); // Загальна вартість повинна бути 80.75
+            Assert.Equal(80.75m, total);
         }
 
         [Fact]
         public void UpdateOrderStatus_ShouldUpdateStatusCorrectly()
         {
-            // Arrange
             var order = new Order(1);
-
-            // Act
             order.UpdateOrderStatus("Готується");
             order.UpdateOrderStatus("Готово");
 
-            // Assert
-            Assert.Equal("Готово", order.Status); // Статус повинен оновитися до "Готово"
+            Assert.Equal("Готово", order.Status);
         }
 
         [Fact]
-        public void UpdateOrderStatus_InvalidSequence_ShouldThrowException()
+        public void UpdateOrderStatus_ShouldThrowForInvalidStatusChange()
         {
-            // Arrange
             var order = new Order(1);
 
-            // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => order.UpdateOrderStatus("Готово")); // Неправильна послідовність
+            Assert.Throws<InvalidOperationException>(() => order.UpdateOrderStatus("Готово"));
         }
     }
 }

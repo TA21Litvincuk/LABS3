@@ -9,22 +9,21 @@ namespace Lab3
     // Клас, що представляє замовлення
     public class Order
     {
-        public int OrderId { get; } // Унікальний ідентифікатор замовлення
-        public List<Dish> OrderedDishes { get; } // Список страв у замовленні
-        public string Status { get; private set; } // Поточний статус замовлення
+        public int OrderId { get; private set; } // Унікальний ідентифікатор замовлення
+        public List<Dish> OrderedDishes { get; private set; } // Список страв у замовленні
+        public string Status { get; private set; } // Статус замовлення ("Очікує", "Готується", "Готово")
 
-        // Конструктор для створення замовлення
+        // Конструктор замовлення
         public Order(int orderId)
         {
-            OrderId = orderId; // Присвоюємо унікальний ідентифікатор
-            OrderedDishes = new List<Dish>(); // Ініціалізуємо список страв
-            Status = "Очікує"; // Початковий статус замовлення
+            OrderId = orderId;
+            OrderedDishes = new List<Dish>();
+            Status = "Очікує";
         }
 
-        // Оновлює статус замовлення
+        // Метод для оновлення статусу замовлення
         public void UpdateOrderStatus(string newStatus)
         {
-            // Перевірка дозволеної послідовності статусів
             if ((Status == "Очікує" && newStatus == "Готується") ||
                 (Status == "Готується" && newStatus == "Готово"))
             {
@@ -36,15 +35,16 @@ namespace Lab3
             }
         }
 
-        // Обчислює загальну вартість замовлення
+        // Метод для обчислення загальної вартості замовлення
         public decimal CalculateTotal()
         {
             decimal total = 0;
             foreach (var dish in OrderedDishes)
             {
-                total += dish.Price; // Додаємо ціну кожної страви до загальної суми
+                total += dish.Price;
             }
-            return total; // Повертаємо загальну вартість
+            return total;
         }
     }
+
 }
