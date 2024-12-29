@@ -15,6 +15,14 @@ namespace Lab3
             _orders = new Dictionary<int, Order>();
         }
 
+        public int CreateOrder()
+        {
+            var orderId = _orders.Count + 1; // Генеруємо новий ID замовлення
+            var order = new Order(orderId);
+            _orders.Add(orderId, order);
+            return orderId; // Повертаємо ID створеного замовлення
+        }
+
         // Метод для створення нового замовлення
         public void CreateOrder(int orderId)
         {
